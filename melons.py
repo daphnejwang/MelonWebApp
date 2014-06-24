@@ -7,6 +7,8 @@ app = Flask(__name__)
 app.secret_key = '\xf5!\x07!qj\xa4\x08\xc6\xf8\n\x8a\x95m\xe2\x04g\xbb\x98|U\xa2f\x03'
 app.jinja_env.undefined = jinja2.StrictUndefined
 
+
+
 @app.route("/")
 def index():
     """This is the 'cover' page of the ubermelon site""" 
@@ -95,5 +97,10 @@ def checkout():
     flash("Sorry! Checkout will be implemented in a future version of ubermelon.")
     return redirect("/melons")
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+    
 if __name__ == "__main__":
     app.run(debug=True)
