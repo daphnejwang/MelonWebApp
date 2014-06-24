@@ -2,10 +2,10 @@
 {% block body %}
 <table class="table table-striped">
     <tr><th>Melon Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
-    {% for key, value in display_melons.iteritems() %}
-        <tr><td>{{key}}</td><td>{{value[0]}}</td><td>{{value[1]}}</td><td>{{value[2]}}</td></tr> 
+    {% for name, melon in display_melons.iteritems() %}
+        <tr><td>{{name}}</td><td>{{melon.quantity}}</td><td>${{'%0.2f' % melon.price}}</td><td>${{'%0.2f' % melon.total}}</td></tr> 
     {% endfor %}
 </table>
-<h3>Total: $27.00</h3>
+<h3>Total: ${{'%0.2f' % total_price}}</h3>
 <a href="/checkout" class="btn btn-large btn-primary">Check Out</a>
 {% endblock %}

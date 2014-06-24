@@ -34,12 +34,14 @@ def shopping_cart():
     list held in the session that contains all the melons to be added. Check
     accompanying screenshots for details."""
     melon_types = {}
+    total_price = 0.00
     if "cart" in session:
         for key, quantity in session["cart"].iteritems():
             melon = model.get_melon_by_id(int(key))
             total = melon.price * quantity
-            melon_types[melon.common_name] = [quantity, melon.price, total]
-    return render_template("cart.html", display_melons=melon_types)
+            melon_types[melon.common_name] = {'quantity': quantity, 'price': melon.price, 'total': total}
+            total_price += total
+    return render_template("cart.html", display_melons=melon_types, total_price = total_price)
     
 @app.route("/add_to_cart/<int:id>")
 def add_to_cart(id):
@@ -77,7 +79,6 @@ def process_login():
     """
     error = None
     email = request.form['email']
-    print email
     customer = model.get_customer_by_email(email)
     if customer:
         session['username'] = customer.first_name
