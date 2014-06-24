@@ -13,7 +13,6 @@ def index():
     return render_template("index.html")
 
 @app.route("/melons")
-
 def list_melons():
     """This is the big page showing all the melons ubermelon has to offer"""
     melons = model.get_melons()
@@ -64,14 +63,28 @@ def add_to_cart(id):
 
 @app.route("/login", methods=["GET"])
 def show_login():
+    if "username" in session:
+        message = "%s is logged in." % session['username']
+        return render_template("logout.html", message=message)
     return render_template("login.html")
 
 
 @app.route("/login", methods=["POST"])
 def process_login():
     """TODO: Receive the user's login credentials located in the 'request.form'
-    dictionary, look up the user, and store them in the session."""
-    return "Oops! This needs to be implemented"
+    dictionary, look up the user, and store them in the session.
+    test email: ashley@eimbee.biz, frances@jabbercube.org
+    """
+    error = None
+    email = request.form['email']
+    print email
+    customer = model.get_customer_by_email(email)
+    if customer:
+        session['username'] = customer.first_name
+        return redirect("/melons")
+    else:
+        error = 'Invalid username/password.'
+    return render_template('login.html', error = error)
 
 
 @app.route("/checkout")
